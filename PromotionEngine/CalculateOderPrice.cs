@@ -155,7 +155,25 @@ namespace PromotionEngine
                 skuIdentifier = string.Empty;
                 #endregion
 
+                #region "Single Product"
+                // Exclude products which have been already processed / calculated 
+                selectedProducts = selectedProducts.Where(c => !c.HasCalculated).ToList();
 
+                foreach (var item in selectedProducts)
+                {
+                    price = 0;
+                    price = price + (item.Price * item.Unit);
+                    skuIdentifier = ($"{item.Unit.ToString()} * {item.SKU}");
+
+                    if (dict.ContainsKey(item.SKU))
+                    {
+                        if (dict[skuIdentifier] > price)
+                            dict[skuIdentifier] = price;
+                    }
+                    else
+                        dict.Add(skuIdentifier, price);
+                }
+                #endregion
             }
 
             return dict;
