@@ -1,7 +1,9 @@
-﻿using PromotionalEngine;
+﻿using Ninject;
+using PromotionalEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +13,11 @@ namespace PromotionEngine
     {
         static void Main(string[] args)
         {
+            var kernel = new StandardKernel();
+            kernel.Load(Assembly.GetExecutingAssembly());
+            var productService = kernel.Get<IProductService>();
+            var ruleService = kernel.Get<IRuleService>();
+
             List<SelectedProduct> selectedProdList = new List<SelectedProduct>();
 
             bool flag = true;
