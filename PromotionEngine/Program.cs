@@ -1,5 +1,5 @@
 ﻿using Ninject;
-using PromotionalEngine;
+using PromotionEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +44,19 @@ namespace PromotionEngine
 
             Console.WriteLine("==========================");
 
+            IOrder order = new CalculateOderPrice(productService, ruleService);
+            Dictionary<string, double> totalPrice = order.CaclculateOrderPrice(selectedProdList);
+
+            foreach (var item in totalPrice)
+            {
+                Console.WriteLine($"{item.Key.Trim() } \t  {item.Value}");
+            }
+            Console.WriteLine("==========================");
+            double totPrice = totalPrice.Sum(price => price.Value);
+            Console.WriteLine($"Total: \t   {totPrice}");
+            Console.WriteLine("==========================");
+
+            Console.Read();
         }
 
     }

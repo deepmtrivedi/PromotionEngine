@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculateOderPrice.cs" />
+    <Compile Include="DIContainer.cs" />
     <Compile Include="IService\IOrder.cs" />
     <Compile Include="IService\IProductService.cs" />
     <Compile Include="IService\IRuleService.cs" />

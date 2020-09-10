@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PromotionalEngine
+namespace PromotionEngine
 {
     /// <summary>
     /// Dependency injection of services through Ninject container
