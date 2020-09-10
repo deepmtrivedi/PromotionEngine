@@ -42,16 +42,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IService\IOrder.cs" />
+    <Compile Include="IService\IProductService.cs" />
+    <Compile Include="IService\IRuleService.cs" />
+    <Compile Include="Model\FinalProductList.cs" />
+    <Compile Include="Model\Products.cs" />
+    <Compile Include="Model\Rule.cs" />
+    <Compile Include="Model\SelectedProduct.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ProductService.cs" />
+    <Compile Include="Service\RuleService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IService\" />
-    <Folder Include="Model\" />
-    <Folder Include="Service\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
