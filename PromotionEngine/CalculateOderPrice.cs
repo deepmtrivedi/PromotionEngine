@@ -94,6 +94,68 @@ namespace PromotionEngine
                 skuIdentifier = string.Empty;
                 #endregion
 
+                #region "Addition of Products"
+
+                // Get the rules having different products combo
+                var addintionRule = rules.Where(x => x.SKUWithUnits != null).ToList();
+                // Exclude products which have been already processed / calculated 
+                selectedProducts = selectedProducts.Where(x => x.HasCalculated == false).ToList();
+
+                price = 0;
+
+                foreach (var item in addintionRule)
+                {
+                    var SKUWithUnits = item.SKUWithUnits;
+                    int cnt = 1, tot = SKUWithUnits.Count;
+                    string combo = string.Empty;
+                    // Iterate over combo product in a rule
+                    foreach (KeyValuePair<string, int> keyValues in SKUWithUnits)
+                    {
+                        string arSKU = keyValues.Key;
+
+                        int ruleUnit = keyValues.Value;
+                        var selProductUnit = selectedProducts.Where(x => x.SKU == arSKU).Select(x => x.Unit).FirstOrDefault();
+                        var spPrice = selectedProducts.Where(x => x.SKU == arSKU).Select(x => x.Price).FirstOrDefault();
+                        var spDisount = item.Discount;
+                        skuIdentifier = ($"[{ruleUnit.ToString()} * {arSKU}]");
+
+                        combo = skuIdentifier + " + " + combo;
+
+                        if (selProductUnit >= ruleUnit)
+                        {
+                            // discount will be applied after summing of all the products from combo
+                            price = cnt == tot ? (price + (spPrice * ruleUnit)) * spDisount : price + (spPrice * ruleUnit);
+                            selProductUnit = selProductUnit - ruleUnit;
+
+                            // reset units of selected product
+                            var usedSKU = selectedProducts.Where(c => !c.HasCalculated && c.SKU == arSKU).ToList();
+                            usedSKU.ForEach(c => c.Unit = selProductUnit);
+
+                            // mark products with processed/calculated 
+                            if (selProductUnit == 0)
+                            {
+                                usedSKU = selectedProducts.Where(c => !c.HasCalculated && c.SKU == arSKU).ToList();
+                                usedSKU.ForEach(c => c.HasCalculated = true);
+                            }
+                            cnt++;
+                        }
+                        else if (selProductUnit < ruleUnit)
+                        {
+                            break;
+                        }
+                    }
+                    if (price != 0.0)
+                    {
+                        // remove last 3 characters from name
+                        combo = combo.Remove(combo.Length - 3);
+                        // add to result
+                        dict.Add(combo.Trim(), price);
+                    }
+                }
+                skuIdentifier = string.Empty;
+                #endregion
+
+
             }
 
             return dict;
